@@ -1,0 +1,7 @@
+# Keep child repositories fully independent
+/hibiscus/
+/jameica/
+
+# Optional local noise
+.DS_Store
+Thumbs.db
