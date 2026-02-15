@@ -8,12 +8,14 @@
 `minimalinvasiv` ist oberstes Gebot.
 
 1. Keine Datenbank-Änderungen.
-2. Keine Änderung der Matching-Logik für Umsatzkategorien.
-3. Nur UI-Anpassung:
+2. Keine Änderungen im ENCODING.
+3. Kein Änderung von existierenden Bezeichnern, Strings aus "Settings" etc. 
+4. Keine Änderung der Matching-Logik für Umsatzkategorien.
+5. Nur UI-Anpassung:
    `statt immer kompletter Baum -> Baumansicht mit Filterfeld + Expand/Collapse`.
-4. Möglichst keine neuen Dependencies:
+6. Möglichst keine neuen Dependencies:
    nur SWT/JFace verwenden, die in Jameica ohnehin vorhanden sind.
-5. Best effort Umsetzung ohne tiefe Eingriffe in Jameica-Kern.
+7. Best effort Umsetzung ohne tiefe Eingriffe in Jameica-Kern.
 
 ## Arbeitsstruktur (zielspezifisch)
 Jedes Ziel wird als eigener Workstream geführt, mit eigener Scope-Definition und eigenen Artefakten:
