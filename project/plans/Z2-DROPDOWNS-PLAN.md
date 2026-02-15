@@ -100,5 +100,31 @@ Bearbeitungsreihenfolge: `Z2.1 -> Z2.2 -> Z2.3`.
    - Notbooked-Umsatz bleibt nicht editierbar.
    - Regressionstest: übrige Felder/Speichern unverändert.
 7. PR-Readiness (Z2.2):
-   - Erwartete Ziel-Datei: `hibiscus/src/de/willuhn/jameica/hbci/gui/controller/UmsatzDetailControl.java`.
+   - Erwartete Ziel-Dateien:
+     - `hibiscus/src/de/willuhn/jameica/hbci/gui/controller/UmsatzDetailControl.java`
+     - `hibiscus/src/de/willuhn/jameica/hbci/gui/dialogs/UmsatzTypListDialog.java` (Dialog-Positionierung auf Vorauswahl)
    - Leitplanken: keine DB-Änderung, keine Matching-Änderung, keine Encoding-Migration.
+
+## Z2.2 Ist-Stand (umgesetzt)
+1. Das Kategorie-Feld in der Umsatz-Detailansicht wurde von langem Dropdown auf read-only Anzeigefeld mit `...`-Button umgestellt.
+2. Die Auswahl erfolgt über den bestehenden Dialog „Auswahl der Kategorie“.
+3. Kein zusätzlicher Sonderpunkt `<nicht zugeordnet>` in Z2.2.
+4. Null-/Leerfall bleibt fachlich als „keine Kategorie“ möglich.
+5. Die Anzeige nutzt einen gekürzten Pfad mit sichtbarem Basename.
+6. Zusätzliche Usability-Verbesserung im Dialog:
+   - bei vorausgewählter Kategorie wird auf die markierte Zeile positioniert (Scroll-Position wird gesetzt).
+7. Fachliche Logik bleibt unverändert:
+   - Speicherung weiterhin über `setUmsatzTyp(...)`
+   - Disable-Verhalten bei `Umsatz.FLAG_NOTBOOKED` unverändert
+
+## Z2.2 Testabnahme
+1. Testmodus: interaktiv.
+2. Ergebnis: alle Testfälle erfolgreich.
+3. Geprüft:
+   - Kategorie ändern bei bereits zugeordnetem Umsatz
+   - Kategorie setzen bei leerer Kategorie
+   - Kategorie entfernen (`Keine Kategorie`)
+   - kein `<nicht zugeordnet>`-Sonderpunkt in Z2.2
+   - Feld bei `FLAG_NOTBOOKED` weiterhin nicht editierbar
+   - Dialog positioniert auf die vorausgewählte Kategorie
+   - Regression: Speichern/Zurück und übrige Felder unverändert
