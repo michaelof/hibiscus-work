@@ -128,3 +128,35 @@ Bearbeitungsreihenfolge: `Z2.1 -> Z2.2 -> Z2.3`.
    - Feld bei `FLAG_NOTBOOKED` weiterhin nicht editierbar
    - Dialog positioniert auf die vorausgewählte Kategorie
    - Regression: Speichern/Zurück und übrige Felder unverändert
+
+## Z2.3 Plan (Umsatzkategorie-Detail: Feld "Übergeordnete Kategorie")
+1. Ziel:
+   - Das lange Dropdown im Feld `Übergeordnete Kategorie` wird analog zu Z2.2 durch ein read-only Anzeigefeld mit `...`-Button ersetzt.
+   - Die Auswahl erfolgt über den bestehenden Dialog „Auswahl der Kategorie“.
+2. Scope:
+   - In Scope: `hibiscus/src/de/willuhn/jameica/hbci/gui/controller/UmsatzTypControl.java`.
+   - Out of Scope: DB, Matching-Logik, weitere Views/Controller, Encoding.
+3. Wichtige Abweichung:
+   - Kein zusätzlicher Sonderpunkt `<nicht zugeordnet>`.
+4. Umsetzung:
+   - Bisheriges `UmsatzTypInput` in `getParent()` durch lokales read-only Input mit `...` ersetzen.
+   - `...` öffnet `UmsatzTypListDialog` mit bestehender Vorauswahl.
+   - Null-/Leerfall bleibt über „Keine Kategorie“ möglich.
+   - Anzeige als gekürzter Pfad mit sichtbarem Basename.
+5. Invarianten:
+   - Speichern bleibt unverändert über `ut.setParent((UmsatzTyp)getParent().getValue())`.
+   - Schutz vor Selbstreferenz bleibt erhalten.
+   - Keine Änderung an fachlicher Zuordnung oder Persistenz.
+6. Testfälle:
+   - Parent ändern und speichern.
+   - Parent entfernen (`Keine Kategorie`) und speichern.
+   - Kein `<nicht zugeordnet>`-Sonderpunkt sichtbar.
+   - Selbstreferenz weiterhin ausgeschlossen.
+   - Regressionstest: übrige Felder/Speichern unverändert.
+7. Akzeptanzkriterien:
+   - Lange Dropdown-Navigation entfällt im Feld „Übergeordnete Kategorie“.
+   - Auswahl über Dialog stabil.
+   - Fachliches Verhalten unverändert.
+8. PR-Readiness (Z2.3):
+   - Erwartete Ziel-Datei: `hibiscus/src/de/willuhn/jameica/hbci/gui/controller/UmsatzTypControl.java`.
+   - Leitplanken: keine DB-Änderung, keine Matching-Änderung, keine Encoding-Migration.
