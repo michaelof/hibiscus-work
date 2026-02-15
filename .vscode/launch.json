@@ -1,0 +1,21 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "Start H",
+      "type": "java",
+      "request": "launch",
+      "projectName": "jameica",
+      "mainClass": "de.willuhn.jameica.Main",
+      "cwd": "${workspaceFolder}/jameica",
+      "args": "-f ${env:HOME}/Hibiscus-TEST/.jameica-test-runs/jh-dev",
+      "vmArgs": "-Djava.library.path=${workspaceFolder}/jameica/lib/swt/linux64 -Djava.net.preferIPv4Stack=true -Xmx512m -Xss64m",
+      "env": {
+        "NO_AT_BRIDGE": "1",
+        "LIBOVERLAY_SCROLLBAR": "0",
+        "GDK_NATIVE_WINDOWS": "1",
+        "SWT_GTK3": "1"
+      }
+    }
+  ]
+}
