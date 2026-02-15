@@ -12,3 +12,64 @@ Bearbeitungsreihenfolge: `Z2.1 -> Z2.2 -> Z2.3`.
    Code: `hibiscus/src/de/willuhn/jameica/hbci/gui/controller/UmsatzDetailControl.java`
 3. `Z2.3` Umsatzkategorie-Detail: Feld „Übergeordnete Kategorie“
    Code: `hibiscus/src/de/willuhn/jameica/hbci/gui/controller/UmsatzTypControl.java`
+
+## Z2.1 Verhaltens-Invarianten (muss unverändert bleiben)
+1. Filter-Verknüpfung bleibt AND-basiert:
+   Kategorie-Filter wirkt zusätzlich zu Konto/Kontogruppe/Zeitraum/Gegenkonto/Betrag/Zweck/Suchbegriff.
+2. Auto-Reload bleibt erhalten:
+   UI-Änderungen an den Filtern triggern weiterhin die Aktualisierung über den bestehenden Listener-Mechanismus (kein neuer separater „Suchen“-Button).
+3. Checkbox-Verhalten bleibt erhalten:
+   `Untergeordnete Kategorien einbeziehen` triggert weiterhin ein Reload und beeinflusst ausschließlich die Kategorie-Matchlogik.
+4. Enable/Disable-Regel bleibt erhalten:
+   Checkbox ist nur aktiv, wenn eine konkrete Kategorie gewählt ist; bei `<Alle Kategorien>` bleibt sie deaktiviert.
+5. Semantik bleibt erhalten:
+   - Ohne Checkbox: exakte Kategorie.
+   - Mit Checkbox: gewählte Kategorie plus untergeordnete Kategorien (über Parent-Kette).
+6. Cache-/Persistenzverhalten bleibt erhalten:
+   bestehende Werte für Kategorie und Unterkategorien-Option werden wie bisher verwendet.
+
+## Testfälle (für Z2.1 Plan ergänzen)
+1. Kategorie gesetzt, Checkbox aus: nur exakte Kategorie.
+2. Kategorie gesetzt, Checkbox an: Kategorie + Unterkategorien.
+3. Checkbox umschalten: Ergebnisliste aktualisiert sich ohne manuellen Such-Button.
+4. Kategorie auf `<Alle Kategorien>`: Checkbox deaktiviert, kein Kategorie-Matchfilter aktiv.
+5. Kombination mit anderem Filter (z. B. Zeitraum): Ergebnis entspricht AND-Verknüpfung.
+6. Kategorie auf `<nicht zugeordnet>`: nur Umsätze ohne zugeordnete Kategorie.
+
+## Annahmen
+1. Z2.1 ändert nur die Kategorie-Auswahl-UI, nicht die bestehende Reload-/Filterlogik.
+2. Bestehender Debounce/Delayed-Listener bleibt unverändert aktiv.
+
+## Z2.1 Ist-Stand (umgesetzt)
+1. Das lange Kategorie-Dropdown wurde ersetzt durch ein read-only Anzeigefeld mit `...`-Button.
+2. Die Auswahl erfolgt über das bestehende Muster aus dem Dialog „Auswahl der Kategorie“.
+3. Pseudokategorien sind verfügbar:
+   - `<Alle Kategorien>`
+   - `<nicht zugeordnet>`
+4. Die Anzeige nutzt einen gekürzten Pfad mit sichtbarem Basename.
+5. Filterlogik bleibt unverändert:
+   - AND-Verknüpfung mit den übrigen Filtern
+   - Auto-Reload über den bestehenden Listener-Mechanismus
+   - bestehende Checkbox-Semantik für Unterkategorien bleibt erhalten
+
+## Z2.1 Testabnahme
+1. Testmodus: interaktiv.
+2. Ergebnis: alle Testfälle erfolgreich.
+3. Geprüft:
+   - exakte Kategorie (Checkbox aus)
+   - Kategorie plus Unterkategorien (Checkbox an)
+   - `<Alle Kategorien>`
+   - `<nicht zugeordnet>`
+   - AND-Kombinationen mit Zeitraum/Suchbegriff
+   - Auto-Reload ohne separaten Such-Button
+   - Regression der übrigen Filterfunktionen
+
+## PR-Readiness (Z2.1)
+1. Geänderte Datei:
+   - `hibiscus/src/de/willuhn/jameica/hbci/gui/parts/KontoauszugList.java`
+2. Leitplanken erfüllt:
+   - keine DB-Änderung
+   - keine Matching-Änderung
+   - keine Encoding-Migration
+3. Hinweis:
+   - `hibiscus/.project` bleibt bewusst unstaged und außerhalb des Z2.1-PR-Scope.
