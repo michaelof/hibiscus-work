@@ -73,3 +73,32 @@ Bearbeitungsreihenfolge: `Z2.1 -> Z2.2 -> Z2.3`.
    - keine Encoding-Migration
 3. Hinweis:
    - `hibiscus/.project` bleibt bewusst unstaged und außerhalb des Z2.1-PR-Scope.
+
+## Z2.2 Plan (Umsatz-Detailansicht: Feld "Kategorie")
+1. Ziel:
+   - Die lange Dropdown-Auswahl im Feld `Kategorie` der Umsatz-Detailansicht wird UI-seitig analog zu Z2.1 verbessert.
+   - Bedienmuster: read-only Anzeigefeld plus `...`-Button und Dialog "Auswahl der Kategorie".
+2. Scope:
+   - In Scope: `hibiscus/src/de/willuhn/jameica/hbci/gui/controller/UmsatzDetailControl.java`.
+   - Out of Scope: DB, Matching-Logik, weitere Views/Controller, Encoding.
+3. Wichtige Abweichung zu Z2.1:
+   - Kein Sonderfall `<nicht zugeordnet>` als zusätzlicher UI-Eintrag.
+4. Umsetzung:
+   - Bisheriges `UmsatzTypInput` im Feld `Kategorie` durch lokales read-only Input mit `...` ersetzen.
+   - `...` öffnet `UmsatzTypListDialog` unter Beibehaltung der bisherigen Typ-Filterlogik.
+   - Null-/Leerfall bleibt fachlich als "keine Kategorie" möglich.
+   - Pfadanzeige wie bei Z2.1 gekürzt, Basename bleibt sichtbar.
+5. Invarianten:
+   - Speichern bleibt unverändert über `u.setUmsatzTyp((UmsatzTyp)getUmsatzTyp().getValue())`.
+   - Disable-Regel bei `Umsatz.FLAG_NOTBOOKED` bleibt unverändert.
+   - Keine Änderung an fachlicher Zuordnung/Filterung.
+6. Testfälle:
+   - Kategorie ändern bei bereits zugeordnetem Umsatz.
+   - Kategorie setzen bei bislang leerer Kategorie.
+   - Kategorie entfernen (`null`) und speichern.
+   - Kein `<nicht zugeordnet>`-Sonderpunkt sichtbar.
+   - Notbooked-Umsatz bleibt nicht editierbar.
+   - Regressionstest: übrige Felder/Speichern unverändert.
+7. PR-Readiness (Z2.2):
+   - Erwartete Ziel-Datei: `hibiscus/src/de/willuhn/jameica/hbci/gui/controller/UmsatzDetailControl.java`.
+   - Leitplanken: keine DB-Änderung, keine Matching-Änderung, keine Encoding-Migration.
