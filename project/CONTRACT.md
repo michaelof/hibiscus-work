@@ -95,3 +95,14 @@ Die Pull-Request soll enthalten:
 4. Mini-Testprotokoll:
    Filter leer, Filter mit Treffer, Filter ohne Treffer, Expand/Collapse.
 5. Optional 1-2 Screenshots (vorher/nachher) nur vom betroffenen Tab.
+
+## Git/PR-Workflow (verbindlich)
+1. Pro Ziel ein eigener Branch und ein eigener PR:
+   `Z1`, `Z2.1`, `Z2.2`, `Z2.3` getrennt.
+2. PRs werden als `Draft` vorbereitet und erst gesammelt finalisiert.
+3. Commit-Messages in Deutsch.
+4. Commit-Body ohne Literal-`\n`-Zeichen:
+   echte Zeilenumbrüche verwenden.
+5. Keine Sammel-Commits über mehrere Ziele.
+6. Repo-spezifisch arbeiten:
+   Feature-Commits in `hibiscus`, keine unbeabsichtigten Top-Level-Git-Änderungen.
