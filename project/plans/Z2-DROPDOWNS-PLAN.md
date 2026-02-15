@@ -160,3 +160,35 @@ Bearbeitungsreihenfolge: `Z2.1 -> Z2.2 -> Z2.3`.
 8. PR-Readiness (Z2.3):
    - Erwartete Ziel-Datei: `hibiscus/src/de/willuhn/jameica/hbci/gui/controller/UmsatzTypControl.java`.
    - Leitplanken: keine DB-Änderung, keine Matching-Änderung, keine Encoding-Migration.
+
+## Z2.3 Ist-Stand (umgesetzt)
+1. Das Feld „Übergeordnete Kategorie“ wurde von langem Dropdown auf read-only Anzeigefeld mit `...`-Button umgestellt.
+2. Die Auswahl erfolgt über den bestehenden Dialog „Auswahl der Kategorie“.
+3. Kein zusätzlicher Sonderpunkt `<nicht zugeordnet>` in Z2.3.
+4. Null-/Leerfall bleibt fachlich über „Keine Kategorie“ möglich.
+5. Die Anzeige nutzt einen gekürzten Pfad mit sichtbarem Basename.
+6. Die bestehende Dialog-Positionierung auf die vorausgewählte Kategorie wird mitgenutzt.
+7. Fachliche Logik bleibt unverändert:
+   - Speicherung weiterhin über `setParent(...)`
+   - bestehender Schutz vor Selbstauswahl bleibt erhalten (inkl. bestehender Meldung beim Speichern)
+
+## Z2.3 Testabnahme
+1. Testmodus: interaktiv.
+2. Ergebnis: alle Testfälle erfolgreich.
+3. Geprüft:
+   - Parent ändern und speichern
+   - Parent entfernen (`Keine Kategorie`) und speichern
+   - kein `<nicht zugeordnet>`-Sonderpunkt
+   - Selbstauswahl wird weiterhin abgefangen
+   - Dialog positioniert auf die vorausgewählte Kategorie
+   - Regression: übrige Felder/Speichern unverändert
+
+## PR-Readiness (Z2.3)
+1. Geänderte Datei:
+   - `hibiscus/src/de/willuhn/jameica/hbci/gui/controller/UmsatzTypControl.java`
+2. Leitplanken erfüllt:
+   - keine DB-Änderung
+   - keine Matching-Änderung
+   - keine Encoding-Migration
+3. Hinweis:
+   - `hibiscus/.project` bleibt bewusst unstaged und außerhalb des Z2.3-PR-Scope.
