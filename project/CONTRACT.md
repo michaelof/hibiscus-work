@@ -26,6 +26,7 @@ Jedes Ziel wird als eigener Workstream geführt, mit eigener Scope-Definition un
 Empfohlene Ziel-IDs:
 1. `Z1-SETTINGS-TREE` (Einstellungen-Tab Umsatzkategorien)
 2. `Z2-DROPDOWNS` (Simple Kategoriebaum-Dropdowns, pro Vorkommen)
+3. `UK1-SICHERHEITSABFRAGE-LOESCHEN` (Loeschwarnung in Umsatzkategorien)
 
 ## Scope Z1-SETTINGS-TREE
 Betroffen:
@@ -55,6 +56,17 @@ Für jedes Sub-Ziel gilt:
 1. Eigener Scope im jeweiligen Plan/TODO.
 2. Entscheidung „umsetzen / nicht umsetzen“ mit kurzer Begründung.
 3. Keine Sammeländerung ohne klare Trennung pro Vorkommen.
+
+## Scope UK1-SICHERHEITSABFRAGE-LOESCHEN
+Betroffen:
+1. `Einstellungen -> Umsatz-Kategorien -> Kontextmenue -> Loeschen`.
+2. Loesch-Rueckfrage in `hibiscus/src/de/willuhn/jameica/hbci/gui/action/DBObjectDelete.java`.
+
+Nicht betroffen:
+1. Datenmodell/DB-Schema.
+2. Matching-Logik.
+3. Encoding.
+4. Zusatzfunktion „Zeige Umsaetze“.
 
 ## Konkrete UX-Definition (Abnahme) für Z1
 1. Über dem Baum steht ein Textfeld: `Filter...`.
@@ -98,7 +110,7 @@ Die Pull-Request soll enthalten:
 
 ## Git/PR-Workflow (verbindlich)
 1. Pro Ziel ein eigener Branch und ein eigener PR:
-   `Z1`, `Z2.1`, `Z2.2`, `Z2.3` getrennt.
+   `Z1`, `Z2.1`, `Z2.2`, `Z2.3`, `UK1` getrennt.
 2. PRs werden als `Draft` vorbereitet und erst gesammelt finalisiert.
 3. Commit-Messages in Deutsch.
 4. Commit-Body ohne Literal-`\n`-Zeichen:
