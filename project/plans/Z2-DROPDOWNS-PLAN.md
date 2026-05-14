@@ -1,5 +1,11 @@
 # Z2-DROPDOWNS Plan
 
+## Basisstand fuer Umsetzung
+1. Branch-Neuzuschnitte fuer PR-Autarkie basieren auf dem jeweils aktuellen `origin/master` im Fork `michaelof/hibiscus`.
+2. Vor jedem Recut:
+   - `git -C hibiscus fetch origin master`
+   - Branch von `origin/master` neu ableiten (kein `branch auf branch`).
+
 ## Scope
 Pro Vorkommen von `UmsatzTypInput` separat bewerten.
 GUI-Bezeichnung ist führend, Code-Stelle dient nur der Zuordnung.
@@ -74,6 +80,27 @@ Bearbeitungsreihenfolge: `Z2.1 -> Z2.2 -> Z2.3`.
 3. Hinweis:
    - `hibiscus/.project` bleibt bewusst unstaged und außerhalb des Z2.1-PR-Scope.
 
+## PR-Struktur / Autarkie (Review-Follow-up)
+1. Feststellung:
+   - `Z2.1` war PR-seitig bereits autark.
+   - `Z2.2` und `Z2.3` waren branch-seitig gestapelt (nicht autark gegen `master`).
+2. Ziel:
+   - alle Z2-PRs autark gegen `master` / `upstream/master`.
+3. Strategie:
+   - `Z2.2` und `Z2.3` Branches neu zuschneiden und die bestehenden PRs `#151` und `#152` per `--force-with-lease` aktualisieren.
+4. Hinweis:
+   - Die PRs wurden vorübergehend auf `Draft` gesetzt (On Hold).
+
+## PR-Struktur / Autarkie (Ist-Stand)
+1. Umsetzung erfolgt:
+   - PR `#150` (`Z2.1`) ist autark gegen `master`.
+   - PR `#151` (`Z2.2`) ist autark gegen `master` und enthaelt nur `UmsatzDetailControl`.
+   - PR `#152` (`Z2.3`) ist autark gegen `master` und enthaelt nur `UmsatzTypControl`.
+2. Dialog-Positionierung wurde ausgelagert:
+   - neuer Draft-PR `#154` (`Z2.4`) mit nur `UmsatzTypListDialog`.
+3. Kommunikation:
+   - In den PRs `#150` bis `#152` wurden Kommentare zum Autarkie-Neuzuschnitt hinterlegt.
+
 ## Z2.2 Plan (Umsatz-Detailansicht: Feld "Kategorie")
 1. Ziel:
    - Die lange Dropdown-Auswahl im Feld `Kategorie` der Umsatz-Detailansicht wird UI-seitig analog zu Z2.1 verbessert.
@@ -102,8 +129,9 @@ Bearbeitungsreihenfolge: `Z2.1 -> Z2.2 -> Z2.3`.
 7. PR-Readiness (Z2.2):
    - Erwartete Ziel-Dateien:
      - `hibiscus/src/de/willuhn/jameica/hbci/gui/controller/UmsatzDetailControl.java`
-     - `hibiscus/src/de/willuhn/jameica/hbci/gui/dialogs/UmsatzTypListDialog.java` (Dialog-Positionierung auf Vorauswahl)
    - Leitplanken: keine DB-Änderung, keine Matching-Änderung, keine Encoding-Migration.
+   - Hinweis für PR-Autarkie:
+     - Die Dialog-Positionierung in `UmsatzTypListDialog.java` wird in `Z2.4` ausgelagert.
 
 ## Z2.2 Ist-Stand (umgesetzt)
 1. Das Kategorie-Feld in der Umsatz-Detailansicht wurde von langem Dropdown auf read-only Anzeigefeld mit `...`-Button umgestellt.
@@ -111,8 +139,9 @@ Bearbeitungsreihenfolge: `Z2.1 -> Z2.2 -> Z2.3`.
 3. Kein zusätzlicher Sonderpunkt `<nicht zugeordnet>` in Z2.2.
 4. Null-/Leerfall bleibt fachlich als „keine Kategorie“ möglich.
 5. Die Anzeige nutzt einen gekürzten Pfad mit sichtbarem Basename.
-6. Zusätzliche Usability-Verbesserung im Dialog:
+6. Zusätzliche Usability-Verbesserung im Dialog (ursprünglich in Z2.2 mit umgesetzt):
    - bei vorausgewählter Kategorie wird auf die markierte Zeile positioniert (Scroll-Position wird gesetzt).
+   - diese Dialog-Positionierung wird für autarke PR-Zuschnitte als eigenes Sub-Ziel `Z2.4` geführt.
 7. Fachliche Logik bleibt unverändert:
    - Speicherung weiterhin über `setUmsatzTyp(...)`
    - Disable-Verhalten bei `Umsatz.FLAG_NOTBOOKED` unverändert
@@ -167,7 +196,9 @@ Bearbeitungsreihenfolge: `Z2.1 -> Z2.2 -> Z2.3`.
 3. Kein zusätzlicher Sonderpunkt `<nicht zugeordnet>` in Z2.3.
 4. Null-/Leerfall bleibt fachlich über „Keine Kategorie“ möglich.
 5. Die Anzeige nutzt einen gekürzten Pfad mit sichtbarem Basename.
-6. Die bestehende Dialog-Positionierung auf die vorausgewählte Kategorie wird mitgenutzt.
+6. Die bestehende Dialog-Positionierung auf die vorausgewählte Kategorie wird mitgenutzt (UX-Komfort).
+   - Z2.3 ist funktional nicht hart davon abhängig, da der Dialog weiterhin über den bestehenden `preselected`-Parameter arbeitet (keine Signaturänderung).
+   - Die Positionierung wird für autarke PR-Zuschnitte als separates Sub-Ziel `Z2.4` geführt.
 7. Fachliche Logik bleibt unverändert:
    - Speicherung weiterhin über `setParent(...)`
    - bestehender Schutz vor Selbstauswahl bleibt erhalten (inkl. bestehender Meldung beim Speichern)
@@ -192,3 +223,26 @@ Bearbeitungsreihenfolge: `Z2.1 -> Z2.2 -> Z2.3`.
    - keine Encoding-Migration
 3. Hinweis:
    - `hibiscus/.project` bleibt bewusst unstaged und außerhalb des Z2.3-PR-Scope.
+   - Dialog-Positionierung in `UmsatzTypListDialog.java` wird in `Z2.4` ausgelagert.
+
+## Z2.4 Plan (Dialog "Auswahl der Kategorie": Positionierung auf Vorauswahl)
+1. Ziel:
+   - Im Dialog „Auswahl der Kategorie“ wird bei vorhandener Vorauswahl die markierte Zeile sichtbar positioniert.
+2. Scope:
+   - In Scope: `hibiscus/src/de/willuhn/jameica/hbci/gui/dialogs/UmsatzTypListDialog.java`
+   - Out of Scope: Controller-Umstellungen in Z2.1/Z2.2/Z2.3, DB, Matching, Encoding
+3. Umsetzung:
+   - bestehende Vorauswahl (`preselected`) weiterverwenden
+   - nach `select(...)` die Tabellenansicht auf die ausgewählte Zeile positionieren (`setTopIndex(...)`)
+4. API/Kompatibilität:
+   - keine neue API
+   - keine Signaturänderung
+   - bestehender Konstruktor `UmsatzTypListDialog(int position, UmsatzTyp preselected, int typ)` bleibt unverändert
+5. Testfälle:
+   - Dialog mit Vorauswahl öffnet mit sichtbarer markierter Zeile
+   - Dialog ohne Vorauswahl unverändert
+   - kein Verhaltensbruch bei Suche/Checkbox/Übernehmen/Abbrechen
+6. PR-Readiness (Z2.4 / PR6):
+   - Erwartete Ziel-Datei:
+     - `hibiscus/src/de/willuhn/jameica/hbci/gui/dialogs/UmsatzTypListDialog.java`
+   - Leitplanken: keine DB-Änderung, keine Matching-Änderung, keine Encoding-Migration

@@ -56,6 +56,7 @@ Für jedes Sub-Ziel gilt:
 1. Eigener Scope im jeweiligen Plan/TODO.
 2. Entscheidung „umsetzen / nicht umsetzen“ mit kurzer Begründung.
 3. Keine Sammeländerung ohne klare Trennung pro Vorkommen.
+4. Gemeinsame Infrastruktur-/UX-Bausteine nach Möglichkeit als eigenes Sub-Ziel führen.
 
 ## Scope UK1-SICHERHEITSABFRAGE-LOESCHEN
 Betroffen:
@@ -118,3 +119,8 @@ Die Pull-Request soll enthalten:
 5. Keine Sammel-Commits über mehrere Ziele.
 6. Repo-spezifisch arbeiten:
    Feature-Commits in `hibiscus`, keine unbeabsichtigten Top-Level-Git-Änderungen.
+7. Keine gestapelten PR-Branches (`branch auf branch`) für reviewbare Ziele.
+8. Jeder PR-Branch basiert direkt auf `hibiscus/master` bzw. `upstream/master`.
+9. Wenn gemeinsame Vorarbeiten nötig sind:
+   - als eigener kleiner PR auslagern (z. B. separater UX-/Dialog-PR)
+   - oder Abhängigkeit im PR explizit kennzeichnen (Ausnahmefall)
